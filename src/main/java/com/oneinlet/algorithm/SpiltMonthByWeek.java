@@ -25,7 +25,7 @@ public class SpiltMonthByWeek {
 
     private static void spiltMonthByWeek() {
         List<LocalDate[]> weekList = new ArrayList<>();
-        LocalDate localDate = LocalDate.now().withMonth(1);
+        LocalDate localDate = LocalDate.now().withMonth(9);
         boolean leapYear = localDate.isLeapYear();//判断是否闰年
         Month month = localDate.getMonth();//获取当前月份
         int length = month.length(leapYear);//根据是否的闰年获取当前月份的最大天数
@@ -33,6 +33,7 @@ public class SpiltMonthByWeek {
         int day = 1;    //当前递增天数变量
         int last = times - 1;//最后一次循环变量
         int lastDayEnd = length + 7;//最大day的天数
+        int preDayEnd = 0;//上一周的结尾号
         for (int i = 0; i < times; i++) {
             if (day == 1) {//如果当前是第一天，防止当前是周日
                 LocalDate dayLocalDate = localDate.withDayOfMonth(day);
@@ -54,13 +55,13 @@ public class SpiltMonthByWeek {
                 }
             } else {
                 if (last == i) {//如果最后一次循环，即是最后一周
-                    int intervalDay = day - length;
-                    LocalDate dayLocalDate3 = localDate.withDayOfMonth(day - intervalDay);
+                    LocalDate dayLocalDate3 = localDate.withDayOfMonth(preDayEnd + 1);
                     LocalDate[] week = new LocalDate[2];
                     week[0] = dayLocalDate3;
                     week[1] = localDate.withDayOfMonth(length);
                     weekList.add(week);
                 } else {
+                    preDayEnd = day;
                     LocalDate dayLocalDate3 = localDate.withDayOfMonth(day - 6);
                     LocalDate[] week = new LocalDate[2];
                     week[0] = dayLocalDate3;
